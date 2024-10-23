@@ -1,0 +1,74 @@
+<div [formGroup]="form">
+  <div class="form-field">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="John" formControlName="name" required />
+      @if (form.controls['name'].invalid) {
+      <mat-error>{{ form.controls["name"].errors | json }}</mat-error>
+      }
+      <mat-icon matSuffix>badge</mat-icon>
+      <mat-hint>Minimum 6 character and max 10 characters</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="form-field">
+    <mat-form-field>
+      <mat-label>Email address</mat-label>
+      <input
+        matInput
+        placeholder="contoso@gmail.com"
+        formControlName="email_address"
+        required
+      />
+      @if (form.controls['email_address'].invalid) {
+      <mat-error>{{ form.controls["email_address"].errors | json }}</mat-error>
+      }
+      <mat-icon matSuffix>email</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="form-field">
+    <mat-form-field>
+      <mat-label>Phone number</mat-label>
+      <input
+        matInput
+        placeholder="92223345"
+        formControlName="phone_number"
+        required
+      />
+      @if (form.controls['phone_number'].invalid) {
+      <mat-error>{{ form.controls["phone_number"].errors | json }}</mat-error>
+      }
+      <mat-icon matSuffix>call</mat-icon>
+      <mat-hint>SG phone number</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="form-field">
+    <mat-label>Gender</mat-label>
+    <mat-radio-group
+      formControlName="gender"
+      aria-label="Select an option"
+      required
+    >
+      <mat-radio-button value="0">Male</mat-radio-button>
+      <mat-radio-button value="1">Female</mat-radio-button>
+    </mat-radio-group>
+    @if (form.controls['gender'].invalid) {
+    <mat-error>{{ form.controls["gender"].errors | json }}</mat-error>
+    }
+  </div>
+  <div class="form-field">
+    <mat-form-field>
+      <mat-label>Assigned Café</mat-label>
+      <mat-select>
+        @for (cafe of cafes; track cafe) {
+        <mat-option [value]="cafe.id">{{ cafe.name }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls['cafe'].invalid) {
+      <mat-error>{{ form.controls["cafe"].errors | json }}</mat-error>
+      }
+      <mat-icon matSuffix>storefront</mat-icon>
+    </mat-form-field>
+  </div>
+</div>
+<button mat-raised-button (click)="submit()">Submit</button>
+<button mat-raised-button (click)="cancel()">Cancel</button>
