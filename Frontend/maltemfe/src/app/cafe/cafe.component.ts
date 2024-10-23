@@ -30,8 +30,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CafeComponent {
   readonly form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(10),
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(256),
+    ]),
     logo: new FormControl(''),
     location: new FormControl('', [Validators.required]),
   });

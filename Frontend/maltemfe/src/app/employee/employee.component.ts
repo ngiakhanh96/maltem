@@ -1,6 +1,7 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
@@ -36,9 +37,16 @@ import { Gender } from '../employees/employees.component';
 })
 export class EmployeeComponent {
   readonly form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    email_address: new FormControl('', [Validators.required]),
-    phone_number: new FormControl('', [Validators.required]),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(10),
+    ]),
+    email_address: new FormControl('', [Validators.required, Validators.email]),
+    phone_number: new FormControl('', [
+      Validators.required,
+      singaporePhoneNumberValidatorFn,
+    ]),
     gender: new FormControl('0', [Validators.required]),
     cafe: new FormControl(''),
   });
@@ -92,4 +100,10 @@ export class EmployeeComponent {
         JSON.stringify(this.initialFormValue)
     );
   }
+}
+
+export function singaporePhoneNumberValidatorFn(control: AbstractControl) {
+  return /(8|9)\d{7}/g.test(control.value)
+    ? null
+    : { invalidPhoneNumber: { value: control.value } };
 }
