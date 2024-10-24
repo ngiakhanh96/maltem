@@ -1,5 +1,4 @@
 ﻿using MaltemBe.Dtos;
-using MaltemBe.Models;
 using MaltemBe.Repositories.Interfaces;
 using MaltemBe.Services.Interfaces;
 
@@ -13,7 +12,7 @@ namespace MaltemBe.Services
             _cafeRepository = cafeRepository;
         }
 
-        public async Task<List<CafeDto>> GetCafesByLocationAsync(string location)
+        public async Task<List<CafeDto>> GetCafesByLocationAsync(string? location)
         {
             var cafes = await _cafeRepository.GetCafesByLocationAsync(location);
             return cafes.OrderByDescending(cf => cf.Employees.Count).Select(CafeDto.MapFromCafe).ToList();
@@ -33,7 +32,7 @@ namespace MaltemBe.Services
 
         public async Task DeleteCafeAsync(Guid cafeId)
         {
-            _cafeRepository.DeleteCafe(new Cafe { Id = cafeId });
+            _cafeRepository.DeleteCafe(cafeId);
             await _cafeRepository.SaveChangesAsync();
         }
     }

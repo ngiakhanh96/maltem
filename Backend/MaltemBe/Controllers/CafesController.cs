@@ -16,7 +16,7 @@ namespace MaltemBe.Controllers
         }
 
         [HttpGet]
-        public async Task<List<CafeDto>> GetCafesByLocation([FromQuery] string location)
+        public async Task<List<CafeDto>> GetCafesByLocation([FromQuery] string? location)
         {
             return await _cafeService.GetCafesByLocationAsync(location);
         }

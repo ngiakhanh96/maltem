@@ -41,5 +41,5 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: '**', redirectTo: '/employee' },
+  { path: '**', redirectTo: '/cafes' },
 ];

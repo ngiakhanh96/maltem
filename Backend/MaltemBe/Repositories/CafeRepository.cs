@@ -13,9 +13,9 @@ namespace MaltemBe.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Cafe>> GetCafesByLocationAsync(string location)
+        public async Task<List<Cafe>> GetCafesByLocationAsync(string? location)
         {
-            return await _dbContext.Cafes.Where(c => c.Location == location).Include(c => c.Employees).ToListAsync();
+            return await _dbContext.Cafes.Where(c => location == null || c.Location == location).Include(c => c.Employees).ToListAsync();
         }
 
         public async Task<Cafe?> GetCafeByNameAsync(string name)
@@ -29,8 +29,13 @@ namespace MaltemBe.Repositories
             return cafe;
         }
 
-        public void DeleteCafe(Cafe cafe)
+        public void DeleteCafe(Guid id)
         {
+            var cafe = new Cafe
+            {
+                Id = id
+            };
+            _dbContext.Cafes.Attach(cafe);
             _dbContext.Cafes.Remove(cafe);
         }
 
@@ -42,6 +47,11 @@ namespace MaltemBe.Repositories
         public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task<Cafe?> GetCafeById(Guid id)
+        {
+            return await _dbContext.Cafes.FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

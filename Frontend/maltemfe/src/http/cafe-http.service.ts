@@ -11,12 +11,15 @@ export class CafeHttpService {
   config = inject(CONFIG);
   baseApiUrl = this.config.apiUrl + 'cafes';
 
-  getCafesByLocation(location: string) {
-    let params = new HttpParams({
-      fromObject: {
-        location: location,
-      },
-    });
+  getCafesByLocation(location: string | null) {
+    let params =
+      location == null
+        ? new HttpParams()
+        : new HttpParams({
+            fromObject: {
+              location: location as string,
+            },
+          });
 
     return this.httpClient.get<ICafe[]>(this.baseApiUrl, {
       params: params,

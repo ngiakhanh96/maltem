@@ -4,8 +4,8 @@ namespace MaltemBe.Dtos
 {
     public class CafeDto
     {
-        public Guid Id { get; set; }
-        public string Logo { get; set; }
+        public Guid? Id { get; set; }
+        public string Logo { get; set; } = string.Empty;
         public string Name { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
@@ -13,13 +13,18 @@ namespace MaltemBe.Dtos
 
         public Cafe MapToCafe()
         {
-            return new Cafe
+            var cafe = new Cafe
             {
-                Id = Id,
                 Name = Name,
                 Description = Description,
                 Location = Location
             };
+            if (Id is not null)
+            {
+                cafe.Id = Id.Value;
+            }
+
+            return cafe;
         }
 
         public static CafeDto MapFromCafe(Cafe cafe)

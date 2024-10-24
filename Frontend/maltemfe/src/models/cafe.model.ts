@@ -1,5 +1,5 @@
 export interface ICafe {
-  id: string;
+  id: string | null;
   logo: string;
   name: string;
   description: string;

@@ -17,7 +17,8 @@ namespace MaltemBe.Repositories
             modelBuilder.Entity<Cafe>()
                 .HasMany(e => e.Employees)
                 .WithOne(e => e.Cafe)
-                .IsRequired(false);
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

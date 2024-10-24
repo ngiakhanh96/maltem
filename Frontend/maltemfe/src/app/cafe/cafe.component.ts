@@ -1,5 +1,6 @@
 import { JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +13,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { ICafe } from '../../models/cafe.model';
+import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
+import { selectCafe } from '../../store/reducer/app.reducer';
 
 @Component({
   selector: 'app-cafe',
@@ -28,7 +33,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './cafe.component.html',
   styleUrl: './cafe.component.scss',
 })
-export class CafeComponent {
+export class CafeComponent implements OnInit {
   readonly form = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -45,30 +50,55 @@ export class CafeComponent {
   initialFormValue = this.form.getRawValue();
   route = inject(ActivatedRoute);
   router = inject(Router);
+  store = inject(Store);
+  destroyRef = inject(DestroyRef);
   isSubmitted = false;
-  mode: 'Add' | 'Edit';
-  constructor() {
-    const id = this.route.snapshot.queryParamMap.get('id');
-    if (id == null) {
-      this.mode = 'Add';
-    } else {
-      this.mode = 'Edit';
-    }
-
-    if (this.mode == 'Edit') {
-      this.form.patchValue({
-        name: 'test',
-        description: 'a@gmail.com',
-        logo: '12345678',
-        location: 'test',
+  mode: 'Add' | 'Edit' = 'Add';
+  cafe?: ICafe;
+  ngOnInit() {
+    this.store
+      .pipe(select(selectCafe), takeUntilDestroyed(this.destroyRef))
+      .subscribe((cafe) => {
+        if (cafe != null) {
+          this.form.patchValue({
+            name: cafe.name,
+            description: cafe.description,
+            logo: cafe.logo,
+            location: cafe.location,
+          });
+          this.initialFormValue = this.form.getRawValue();
+          this.mode = 'Edit';
+          this.cafe = cafe;
+        }
       });
-      this.initialFormValue = this.form.getRawValue();
-    }
   }
 
   submit() {
     this.isSubmitted = true;
-    this.router.navigate(['cafes']);
+    const formValue = this.form.getRawValue();
+    const cafe = <ICafe>{
+      id: this.cafe?.id ?? null,
+      logo: formValue.logo,
+      name: formValue.name,
+      description: formValue.description,
+      location: formValue.location,
+      employees: 0,
+    };
+    if (this.mode === 'Add') {
+      this.store.dispatch(
+        cafeActionGroup.createCafe({
+          cafe,
+          callBack: () => this.router.navigate(['cafes']),
+        })
+      );
+    } else {
+      this.store.dispatch(
+        cafeActionGroup.updateCafe({
+          cafe,
+          callBack: () => this.router.navigate(['cafes']),
+        })
+      );
+    }
   }
 
   cancel() {
