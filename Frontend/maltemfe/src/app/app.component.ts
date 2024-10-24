@@ -1,15 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-export interface ICafe {
-  id: string;
-  logo: string;
-  name: string;
-  description: string;
-  employees: number;
-  location: string;
-}
-
 @Component({
   selector: 'app-root',
   standalone: true,

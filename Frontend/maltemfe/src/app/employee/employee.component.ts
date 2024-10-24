@@ -15,8 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICafe } from '../cafes/cafes.component';
-import { Gender } from '../employees/employees.component';
+import { ICafe } from '../../models/cafe.model';
+import { Gender } from '../../models/employee.model';
 
 @Component({
   selector: 'app-employee',

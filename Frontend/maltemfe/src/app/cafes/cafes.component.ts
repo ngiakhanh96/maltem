@@ -4,15 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { Router, RouterLink } from '@angular/router';
-
-export interface ICafe {
-  id: string;
-  logo: string;
-  name: string;
-  description: string;
-  employees: number;
-  location: string;
-}
+import { ICafe } from '../../models/cafe.model';
 
 @Component({
   selector: 'app-cafes',

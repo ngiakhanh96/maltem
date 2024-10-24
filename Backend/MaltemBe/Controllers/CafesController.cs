@@ -34,7 +34,7 @@ namespace MaltemBe.Controllers
         }
 
         [HttpDelete]
-        public async Task UpdateCafe([FromQuery] Guid id)
+        public async Task DeleteCafe([FromQuery] Guid id)
         {
             await _cafeService.DeleteCafeAsync(id);
         }

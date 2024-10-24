@@ -2,21 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
-
-export interface IEmployee {
-  id: string;
-  name: string;
-  email_address: string;
-  phone_number: number;
-  gender: Gender;
-  days_worked: number;
-  cafe: string;
-}
-
-export enum Gender {
-  Male = 0,
-  Female = 1,
-}
+import { Gender, IEmployee } from '../../models/employee.model';
 
 @Component({
   selector: 'app-employees',
