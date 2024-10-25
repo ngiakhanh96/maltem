@@ -18,9 +18,9 @@ namespace MaltemBe.Repositories
             return await _dbContext.Cafes.Where(c => location == null || c.Location == location).Include(c => c.Employees).ToListAsync();
         }
 
-        public async Task<Cafe?> GetCafeByNameAsync(string name)
+        public async Task<Cafe?> GetCafeByNameAsync(string? name)
         {
-            return await _dbContext.Cafes.Where(c => c.Name == name).Include(c => c.Employees).FirstOrDefaultAsync();
+            return await _dbContext.Cafes.Where(c => name == null || c.Name == name).Include(c => c.Employees).FirstOrDefaultAsync();
         }
 
         public async Task<Cafe> AddCafeAsync(Cafe cafe)

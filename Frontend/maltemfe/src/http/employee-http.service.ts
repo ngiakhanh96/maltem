@@ -12,11 +12,14 @@ export class EmployeeHttpService {
   baseApiUrl = this.config.apiUrl + 'employees';
 
   getEmployeesByCafeName(cafe: string) {
-    let params = new HttpParams({
-      fromObject: {
-        cafe: cafe,
-      },
-    });
+    let params =
+      cafe == null
+        ? new HttpParams()
+        : new HttpParams({
+            fromObject: {
+              cafe: cafe as string,
+            },
+          });
 
     return this.httpClient.get<IEmployee[]>(this.baseApiUrl, {
       params: params,

@@ -4,8 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ICafe } from '../../models/cafe.model';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
 import { selectCafes } from '../../store/reducer/app.reducer';
@@ -14,7 +15,6 @@ import { selectCafes } from '../../store/reducer/app.reducer';
   selector: 'app-cafes',
   standalone: true,
   imports: [
-    RouterLink,
     MatButtonModule,
     MatTableModule,
     MatFormFieldModule,
@@ -48,6 +48,8 @@ export class CafesComponent implements OnInit {
   store = inject(Store);
   destroyRef = inject(DestroyRef);
 
+  private searchText$ = new Subject<string>();
+
   ngOnInit() {
     this.store.dispatch(cafeActionGroup.getCafes({ location: null }));
     this.store
@@ -55,6 +57,15 @@ export class CafesComponent implements OnInit {
       .subscribe((cafes) => {
         this.dataSource = cafes;
       });
+    this.searchText$
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((searchText) =>
+        this.store.dispatch(cafeActionGroup.getCafes({ location: searchText }))
+      );
   }
 
   addNewCafe() {
@@ -63,7 +74,13 @@ export class CafesComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
+    const value = (event.target as HTMLInputElement).value;
+    this.searchText$.next(value);
+  }
+
+  navigateToEmployeesPage(cafe: ICafe) {
+    this.store.dispatch(cafeActionGroup.selectCafe({ cafe: cafe }));
+    this.router.navigate(['employees'], { queryParams: { cafe: cafe.name } });
   }
 
   editCafe(cafe: ICafe) {

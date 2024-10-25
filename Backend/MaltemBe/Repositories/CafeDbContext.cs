@@ -14,6 +14,7 @@ namespace MaltemBe.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Employee>().HasKey(e => e.Id);
             modelBuilder.Entity<Cafe>()
                 .HasMany(e => e.Employees)
                 .WithOne(e => e.Cafe)

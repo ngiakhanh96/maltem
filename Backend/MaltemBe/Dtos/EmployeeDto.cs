@@ -5,7 +5,7 @@ namespace MaltemBe.Dtos
 {
     public class EmployeeDto
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         public string Name { get; set; }
         public string Email_address { get; set; }
         public int Phone_number { get; set; }
@@ -16,10 +16,10 @@ namespace MaltemBe.Dtos
 
         public Employee MapToEmployee(Employee employee)
         {
-            employee.Name = employee.Name;
-            employee.Email_address = employee.Email_address;
-            employee.Phone_number = employee.Phone_number;
-            employee.Gender = employee.Gender;
+            employee.Name = Name;
+            employee.Email_address = Email_address;
+            employee.Phone_number = Phone_number;
+            employee.Gender = Gender;
             return employee;
         }
 
@@ -27,7 +27,7 @@ namespace MaltemBe.Dtos
         {
             return new Employee
             {
-                Id = Id,
+                Id = Id ?? Empty,
                 Name = Name,
                 Email_address = Email_address,
                 Phone_number = Phone_number,

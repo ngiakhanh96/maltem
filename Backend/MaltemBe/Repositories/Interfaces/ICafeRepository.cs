@@ -6,7 +6,7 @@ namespace MaltemBe.Repositories.Interfaces
     {
         public Task<List<Cafe>> GetCafesByLocationAsync(string? location);
 
-        public Task<Cafe?> GetCafeByNameAsync(string name);
+        public Task<Cafe?> GetCafeByNameAsync(string? name);
 
         public Task<Cafe> AddCafeAsync(Cafe cafe);
         public void DeleteCafe(Guid id);

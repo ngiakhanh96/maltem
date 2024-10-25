@@ -2,7 +2,12 @@
   <div class="form-field">
     <mat-form-field>
       <mat-label>Name</mat-label>
-      <input matInput placeholder="John" formControlName="name" required />
+      <input
+        matInput
+        placeholder="John Witch"
+        formControlName="name"
+        required
+      />
       @if (form.controls['name'].invalid) {
       <mat-error>{{ form.controls["name"].errors | json }}</mat-error>
       }
@@ -58,9 +63,9 @@
   <div class="form-field">
     <mat-form-field>
       <mat-label>Assigned Café</mat-label>
-      <mat-select>
+      <mat-select formControlName="cafe">
         @for (cafe of cafes; track cafe) {
-        <mat-option [value]="cafe.id">{{ cafe.name }}</mat-option>
+        <mat-option [value]="cafe.name">{{ cafe.name }}</mat-option>
         }
       </mat-select>
       @if (form.controls['cafe'].invalid) {

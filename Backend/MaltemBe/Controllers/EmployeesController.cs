@@ -18,7 +18,7 @@ namespace MaltemBe.Controllers
         }
 
         [HttpGet]
-        public async Task<List<EmployeeDto>> GetEmployeesByCafeName([FromQuery(Name = "cafe")] string cafeName)
+        public async Task<List<EmployeeDto>> GetEmployeesByCafeName([FromQuery(Name = "cafe")] string? cafeName)
         {
             return await _employeeService.GetEmployeesByCafeNameAsync(cafeName);
         }

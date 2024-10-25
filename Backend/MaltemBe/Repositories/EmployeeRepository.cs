@@ -13,6 +13,11 @@ namespace MaltemBe.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<List<Employee>> GetAllEmployees()
+        {
+            return await _dbContext.Employees.Include(e => e.Cafe).ToListAsync();
+        }
+
         public async Task<Employee> AddEmployeeAsync(Employee employee)
         {
             await _dbContext.Employees.AddAsync(employee);
@@ -29,9 +34,9 @@ namespace MaltemBe.Repositories
             _dbContext.Update(employee);
         }
 
-        public async Task<Employee?> GetEmployeeByIdAsync(string id)
+        public async Task<Employee?> GetEmployeeByIdAsync(string? id)
         {
-            return await _dbContext.Employees.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbContext.Employees.FirstOrDefaultAsync(p => p.Id == (id ?? string.Empty));
         }
 
         public async Task SaveChangesAsync()

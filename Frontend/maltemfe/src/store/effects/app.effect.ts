@@ -33,9 +33,10 @@ export class AppEffects {
       this.actions$.pipe(
         ofType(employeeActionGroup.createEmployee),
         switchMap((action) => {
-          return this.employeeHttpService
-            .createEmployee(action.employee)
-            .pipe(catchError(() => EMPTY));
+          return this.employeeHttpService.createEmployee(action.employee).pipe(
+            tap((_) => action.callBack()),
+            catchError(() => EMPTY)
+          );
         })
       ),
     {
@@ -48,9 +49,10 @@ export class AppEffects {
       this.actions$.pipe(
         ofType(employeeActionGroup.updateEmployee),
         switchMap((action) => {
-          return this.employeeHttpService
-            .updateEmployee(action.employee)
-            .pipe(catchError(() => EMPTY));
+          return this.employeeHttpService.updateEmployee(action.employee).pipe(
+            tap((_) => action.callBack()),
+            catchError(() => EMPTY)
+          );
         })
       ),
     {
@@ -63,9 +65,10 @@ export class AppEffects {
       this.actions$.pipe(
         ofType(employeeActionGroup.deleteEmployee),
         switchMap((action) => {
-          return this.employeeHttpService
-            .deleteEmployee(action.id)
-            .pipe(catchError(() => EMPTY));
+          return this.employeeHttpService.deleteEmployee(action.id).pipe(
+            tap((_) => action.callBack()),
+            catchError(() => EMPTY)
+          );
         })
       ),
     {

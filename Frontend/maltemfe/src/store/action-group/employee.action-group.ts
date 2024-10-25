@@ -9,6 +9,6 @@ export const employeeActionGroup = createActionGroup({
     createEmployee: props<{ employee: IEmployee; callBack: () => void }>(),
     updateEmployee: props<{ employee: IEmployee; callBack: () => void }>(),
     deleteEmployee: props<{ id: string; callBack: () => void }>(),
-    selectEmployee: props<{ employee: IEmployee }>(),
+    selectEmployee: props<{ employee?: IEmployee }>(),
   },
 });
