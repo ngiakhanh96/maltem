@@ -18,7 +18,7 @@ export class ErrorComponent {
     this.getErrorMessage();
   }
   errorMessages: string[] = [];
-  errorKeyToErrorMessageMapping: Record<string, string> = {
+  static errorKeyToErrorMessageMapping: Record<string, string> = {
     required: 'Required',
     invalidPhoneNumber: 'Invalid SG phone number',
     exceededMaximumFileSize: 'Exceeded maximum file size',
@@ -29,7 +29,7 @@ export class ErrorComponent {
   getErrorMessage() {
     const errorKeys: string[] = this.errors ? Object.keys(this.errors) : [];
     this.errorMessages = errorKeys.map(
-      (p) => this.errorKeyToErrorMessageMapping[p]
+      (p) => ErrorComponent.errorKeyToErrorMessageMapping[p]
     );
   }
 }
