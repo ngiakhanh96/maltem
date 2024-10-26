@@ -140,14 +140,15 @@ export class CafeComponent implements OnInit, IHasUnsavedChanges {
   hasUnsavedChanges() {
     return (
       !this.isSubmitted &&
-      JSON.stringify(this.form.getRawValue()) !==
-        JSON.stringify(this.initialFormValue)
+      (JSON.stringify(this.form.getRawValue()) !==
+        JSON.stringify(this.initialFormValue) ||
+        this.form.getRawValue().logo !== this.initialFormValue.logo)
     );
   }
 }
 
 export function fileSizeValidatorFn(control: AbstractControl) {
-  return control.value == null || (control.value as File).size <= 1000000
+  return control.value == null || (control.value as File).size <= 2000000
     ? null
     : { exceededMaximumFileSize: (control.value as File).size };
 }
