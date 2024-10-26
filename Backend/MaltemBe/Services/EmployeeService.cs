@@ -40,8 +40,7 @@ namespace MaltemBe.Services
             employee.Id = GenerateEmployeeId();
             if (cafe is not null)
             {
-                employee.StartDate = DateTime.UtcNow;
-                cafe.Employees.Add(employee);
+                cafe.AddEmployee(employee);
             }
             else
             {
@@ -61,8 +60,7 @@ namespace MaltemBe.Services
                     var cafe = await _cafeRepository.GetCafeByNameAsync(employeeDto.Cafe);
                     if (cafe is not null)
                     {
-                        employee.StartDate = DateTime.UtcNow;
-                        employee.Cafe = cafe;
+                        cafe.AddEmployee(employee);
                     }
                 }
                 else if (string.IsNullOrEmpty(employeeDto.Cafe))
@@ -70,8 +68,7 @@ namespace MaltemBe.Services
                     employee.StartDate = null;
                     if (employee.Cafe is not null)
                     {
-                        employee.Cafe.Employees.Remove(employee);
-                        employee.Cafe = null;
+                        employee.Cafe.RemoveEmployee(employee);
                     }
                 }
                 _employeeRepository.UpdateEmployee(employee);
@@ -85,7 +82,7 @@ namespace MaltemBe.Services
             await _employeeRepository.SaveChangesAsync();
         }
 
-        private string GenerateEmployeeId()
+        public string GenerateEmployeeId()
         {
             var stringlen = 7;
             var str = "";

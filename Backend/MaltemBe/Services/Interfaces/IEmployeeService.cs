@@ -11,5 +11,7 @@ namespace MaltemBe.Services.Interfaces
         public Task UpdateEmployeeAsync(EmployeeDto employeeDto);
 
         public Task DeleteEmployeeAsync(string employeeId);
+
+        public string GenerateEmployeeId();
     }
 }
