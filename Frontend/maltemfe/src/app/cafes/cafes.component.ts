@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ICafe } from '../../models/cafe.model';
-import { UtilityService } from '../../services/file.service';
+import { UtilityService } from '../../services/utility.service';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
 import { selectCafes } from '../../store/reducer/app.reducer';
 
