@@ -17,6 +17,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { IHasUnsavedChanges } from '../../guards/deactivate.guard';
 import { ICafe } from '../../models/cafe.model';
 import { IEmployee } from '../../models/employee.model';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
@@ -40,7 +41,7 @@ import { selectCafes, selectEmployee } from '../../store/reducer/app.reducer';
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit, IHasUnsavedChanges {
   readonly form = new FormGroup({
     name: new FormControl('', [
       Validators.required,

@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { from, take } from 'rxjs';
+import { IHasUnsavedChanges } from '../../guards/deactivate.guard';
 import { ICafe } from '../../models/cafe.model';
 import { UtilityService } from '../../services/file.service';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
@@ -36,7 +37,7 @@ import { selectCafe } from '../../store/reducer/app.reducer';
   templateUrl: './cafe.component.html',
   styleUrl: './cafe.component.scss',
 })
-export class CafeComponent implements OnInit {
+export class CafeComponent implements OnInit, IHasUnsavedChanges {
   readonly form = new FormGroup({
     name: new FormControl('', [
       Validators.required,

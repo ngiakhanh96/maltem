@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { deactivateGuard } from '../guards/deactivate.guard';
 import { CafeComponent } from './cafe/cafe.component';
 import { CafesComponent } from './cafes/cafes.component';
 import { EmployeeComponent } from './employee/employee.component';
@@ -10,36 +11,12 @@ export const routes: Routes = [
   {
     path: 'employee',
     component: EmployeeComponent,
-    canDeactivate: [
-      (component: EmployeeComponent) => {
-        if (!component.hasUnsavedChanges()) {
-          return true;
-        }
-        if (
-          confirm('There are unsaved changes. Are you sure to leave this page?')
-        ) {
-          return true;
-        }
-        return false;
-      },
-    ],
+    canDeactivate: [deactivateGuard],
   },
   {
     path: 'cafe',
     component: CafeComponent,
-    canDeactivate: [
-      (component: CafeComponent) => {
-        if (!component.hasUnsavedChanges()) {
-          return true;
-        }
-        if (
-          confirm('There are unsaved changes. Are you sure to leave this page?')
-        ) {
-          return true;
-        }
-        return false;
-      },
-    ],
+    canDeactivate: [deactivateGuard],
   },
   { path: '**', redirectTo: '/cafes' },
 ];
