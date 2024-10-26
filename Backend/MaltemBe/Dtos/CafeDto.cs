@@ -5,7 +5,8 @@ namespace MaltemBe.Dtos
     public class CafeDto
     {
         public Guid? Id { get; set; }
-        public string Logo { get; set; } = string.Empty;
+        //[JsonConverter(typeof(JsonToByteArrayConverter))]
+        public byte[] Logo { get; set; } = [];
         public string Name { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
@@ -17,7 +18,8 @@ namespace MaltemBe.Dtos
             {
                 Name = Name,
                 Description = Description,
-                Location = Location
+                Location = Location,
+                Logo = Logo
             };
             if (Id is not null)
             {
@@ -35,7 +37,8 @@ namespace MaltemBe.Dtos
                 Name = cafe.Name,
                 Description = cafe.Description,
                 Location = cafe.Location,
-                Employees = cafe.Employees.Count
+                Employees = cafe.Employees.Count,
+                Logo = cafe.Logo
             };
         }
     }

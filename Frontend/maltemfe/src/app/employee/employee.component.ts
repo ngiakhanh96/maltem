@@ -56,7 +56,11 @@ export class EmployeeComponent implements OnInit {
     cafe: new FormControl(''),
   });
   initialFormValue = this.form.getRawValue();
-  cafes: ICafe[] = [];
+  cafes: ICafe[] = [
+    {
+      name: '',
+    } as ICafe,
+  ];
   route = inject(ActivatedRoute);
   router = inject(Router);
   store = inject(Store);
@@ -72,7 +76,13 @@ export class EmployeeComponent implements OnInit {
     this.store
       .pipe(select(selectCafes), takeUntilDestroyed(this.destroyRef))
       .subscribe((cafes) => {
-        this.cafes = cafes;
+        this.cafes = this.cafes.concat(cafes);
+        if (this.cafe) {
+          this.form.patchValue({
+            cafe: this.cafe,
+          });
+          this.initialFormValue.cafe = this.cafe;
+        }
       });
     this.store
       .pipe(select(selectEmployee), takeUntilDestroyed(this.destroyRef))
@@ -93,6 +103,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   submit() {
+    this.form.markAllAsTouched();
+    if (this.form.invalid) {
+      return;
+    }
     this.isSubmitted = true;
     const formValue = this.form.getRawValue();
     const employee = <IEmployee>{

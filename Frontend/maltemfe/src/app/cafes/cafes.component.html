@@ -7,17 +7,23 @@
   @for (column of dataColumnsToDisplay; track column) {
   <ng-container [matColumnDef]="column">
     <th mat-header-cell *matHeaderCellDef>{{ columnHeadersMap[column] }}</th>
-    @if (column === 'employees') {
     <td mat-cell *matCellDef="let element">
+      @if (column === 'logo') { @if (element[column] && element[column] != '') {
+      <img
+        [src]="utilityService.convertByteArrayToImageSource(element[column])"
+        width="50"
+        height="50"
+      />
+      } } @else if (column === 'employees') {
       <span
         class="employees_count"
         (click)="navigateToEmployeesPage(element)"
         >{{ element[column] }}</span
       >
+      } @else {
+      {{ element[column] }}
+      }
     </td>
-    } @else {
-    <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
-    }
   </ng-container>
   }
   <ng-container [matColumnDef]="'editAction'">

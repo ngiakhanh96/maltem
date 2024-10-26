@@ -36,7 +36,7 @@ namespace MaltemBe.Repositories
 
         public async Task<Employee?> GetEmployeeByIdAsync(string? id)
         {
-            return await _dbContext.Employees.FirstOrDefaultAsync(p => p.Id == (id ?? string.Empty));
+            return await _dbContext.Employees.Where(p => p.Id == (id ?? string.Empty)).Include(p => p.Cafe).FirstOrDefaultAsync();
         }
 
         public async Task SaveChangesAsync()

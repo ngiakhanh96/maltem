@@ -2,6 +2,7 @@ import { JsonPipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
@@ -14,7 +15,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { from, take } from 'rxjs';
 import { ICafe } from '../../models/cafe.model';
+import { UtilityService } from '../../services/file.service';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
 import { selectCafe } from '../../store/reducer/app.reducer';
 
@@ -44,7 +47,7 @@ export class CafeComponent implements OnInit {
       Validators.required,
       Validators.maxLength(256),
     ]),
-    logo: new FormControl(''),
+    logo: new FormControl<File | null>(null, [fileSizeValidatorFn]),
     location: new FormControl('', [Validators.required]),
   });
   initialFormValue = this.form.getRawValue();
@@ -52,9 +55,11 @@ export class CafeComponent implements OnInit {
   router = inject(Router);
   store = inject(Store);
   destroyRef = inject(DestroyRef);
+  utilityService = inject(UtilityService);
   isSubmitted = false;
   mode: 'Add' | 'Edit' = 'Add';
   cafe?: ICafe;
+  imgSource: string | null = null;
   ngOnInit() {
     this.store
       .pipe(select(selectCafe), takeUntilDestroyed(this.destroyRef))
@@ -63,9 +68,14 @@ export class CafeComponent implements OnInit {
           this.form.patchValue({
             name: cafe.name,
             description: cafe.description,
-            logo: cafe.logo,
+            logo: new File([new Uint8Array(cafe.logo)], 'filename', {
+              type: 'mimeType',
+            }),
             location: cafe.location,
           });
+          this.imgSource = this.utilityService.convertByteArrayToImageSource(
+            cafe.logo
+          );
           this.initialFormValue = this.form.getRawValue();
           this.mode = 'Edit';
           this.cafe = cafe;
@@ -74,35 +84,56 @@ export class CafeComponent implements OnInit {
   }
 
   submit() {
+    this.form.markAllAsTouched();
+    if (this.form.invalid) {
+      return;
+    }
     this.isSubmitted = true;
     const formValue = this.form.getRawValue();
-    const cafe = <ICafe>{
-      id: this.cafe?.id ?? null,
-      logo: formValue.logo,
-      name: formValue.name,
-      description: formValue.description,
-      location: formValue.location,
-      employees: 0,
-    };
-    if (this.mode === 'Add') {
-      this.store.dispatch(
-        cafeActionGroup.createCafe({
-          cafe,
-          callBack: () => this.router.navigate(['cafes']),
-        })
-      );
-    } else {
-      this.store.dispatch(
-        cafeActionGroup.updateCafe({
-          cafe,
-          callBack: () => this.router.navigate(['cafes']),
-        })
-      );
-    }
+    from(this.utilityService.convertFileToByteArray(formValue.logo))
+      .pipe(take(1))
+      .subscribe((logo) => {
+        const cafe = <ICafe>{
+          id: this.cafe?.id ?? null,
+          logo: logo,
+          name: formValue.name,
+          description: formValue.description,
+          location: formValue.location,
+          employees: 0,
+        };
+        if (this.mode === 'Add') {
+          this.store.dispatch(
+            cafeActionGroup.createCafe({
+              cafe,
+              callBack: () => this.router.navigate(['cafes']),
+            })
+          );
+        } else {
+          this.store.dispatch(
+            cafeActionGroup.updateCafe({
+              cafe,
+              callBack: () => this.router.navigate(['cafes']),
+            })
+          );
+        }
+      });
   }
 
   cancel() {
     this.router.navigate(['cafes']);
+  }
+
+  onFileSelected(event: any): void {
+    const selectedFile = (event.target.files[0] as File) ?? null;
+    this.form.patchValue({
+      logo: selectedFile,
+    });
+    from(this.utilityService.convertFileToByteArray(selectedFile))
+      .pipe(take(1))
+      .subscribe((bytes) => {
+        this.imgSource =
+          this.utilityService.convertByteArrayToImageSource(bytes);
+      });
   }
 
   hasUnsavedChanges() {
@@ -112,4 +143,10 @@ export class CafeComponent implements OnInit {
         JSON.stringify(this.initialFormValue)
     );
   }
+}
+
+export function fileSizeValidatorFn(control: AbstractControl) {
+  return control.value == null || (control.value as File).size <= 1000000
+    ? null
+    : { exceededMaximumFileSize: (control.value as File).size };
 }

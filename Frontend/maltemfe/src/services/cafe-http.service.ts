@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CONFIG } from '../config/config.service';
+import { CONFIG } from '../app/app.config';
 import { ICafe } from '../models/cafe.model';
 
 @Injectable({

@@ -1,14 +1,32 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  InjectionToken,
+  provideZoneChangeDetection,
+  StaticProvider,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
-import { provideConfig } from '../config/config.service';
+import { config } from '../assets/config';
 import { AppEffects } from '../store/effects/app.effect';
 import { appReducer, appStateName } from '../store/reducer/app.reducer';
 import { routes } from './app.routes';
+
+export interface IConfig {
+  apiUrl: string;
+}
+
+export const CONFIG = new InjectionToken<IConfig>('config');
+
+export function provideConfig(): StaticProvider {
+  return {
+    provide: CONFIG,
+    useValue: config,
+  };
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [

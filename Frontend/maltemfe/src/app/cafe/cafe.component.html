@@ -27,14 +27,24 @@
     </mat-form-field>
   </div>
   <div class="form-field">
-    <mat-form-field>
+    <mat-form-field (click)="fileInput.click()">
       <mat-label>Logo</mat-label>
-      <input matInput placeholder="logo" formControlName="logo" />
-      @if (form.controls['logo'].invalid) {
+      <input matInput hidden formControlName="logo" />
+      <input
+        hidden
+        (change)="onFileSelected($event)"
+        #fileInput
+        type="file"
+        accept="image/*"
+      />
+      @if (imgSource != null) {
+      <img [src]="imgSource" width="50" height="50" />
+      } @if (form.controls['logo'].invalid) {
       <mat-error>{{ form.controls["logo"].errors | json }}</mat-error>
       }
       <mat-icon matSuffix>image</mat-icon>
       <mat-hint>Max 2mb</mat-hint>
+      {{ form.controls["logo"].errors }}
     </mat-form-field>
   </div>
   <div class="form-field">

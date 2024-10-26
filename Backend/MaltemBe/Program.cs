@@ -1,3 +1,4 @@
+using MaltemBe.Converters;
 using MaltemBe.Repositories;
 using MaltemBe.Repositories.Interfaces;
 using MaltemBe.Services;
@@ -14,7 +15,10 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<ICafeRepository, CafeRepository>();
 builder.Services.AddScoped<ICafeService, CafeService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonToByteArrayConverter());
+}); ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

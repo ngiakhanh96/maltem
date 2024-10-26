@@ -1,5 +1,6 @@
 ﻿using MaltemBe.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace MaltemBe.Repositories
 {
@@ -14,12 +15,7 @@ namespace MaltemBe.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>().HasKey(e => e.Id);
-            modelBuilder.Entity<Cafe>()
-                .HasMany(e => e.Employees)
-                .WithOne(e => e.Cafe)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

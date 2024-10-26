@@ -65,6 +65,15 @@ namespace MaltemBe.Services
                         employee.Cafe = cafe;
                     }
                 }
+                else if (string.IsNullOrEmpty(employeeDto.Cafe))
+                {
+                    employee.StartDate = null;
+                    if (employee.Cafe is not null)
+                    {
+                        employee.Cafe.Employees.Remove(employee);
+                        employee.Cafe = null;
+                    }
+                }
                 _employeeRepository.UpdateEmployee(employee);
                 await _employeeRepository.SaveChangesAsync();
             }
@@ -79,12 +88,11 @@ namespace MaltemBe.Services
         private string GenerateEmployeeId()
         {
             var stringlen = 7;
-            var randValue = 0;
             var str = "";
             string letter;
             for (var i = 0; i < stringlen; i++)
             {
-                randValue = _rand.Next(-9, 27);
+                var randValue = _rand.Next(-9, 27);
                 letter = randValue < 1 ? Math.Abs(randValue).ToString() : Convert.ToChar(randValue + 64).ToString();
                 str += letter;
             }

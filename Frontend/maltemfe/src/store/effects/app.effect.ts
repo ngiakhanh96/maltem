@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, EMPTY, map, switchMap, tap } from 'rxjs';
-import { CafeHttpService } from '../../http/cafe-http.service';
-import { EmployeeHttpService } from '../../http/employee-http.service';
+import { CafeHttpService } from '../../services/cafe-http.service';
+import { EmployeeHttpService } from '../../services/employee-http.service';
 import { cafeActionGroup } from '../action-group/cafe.action-group';
 import { employeeActionGroup } from '../action-group/employee.action-group';
 
