@@ -3,9 +3,13 @@
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input matInput placeholder="Cafe name" formControlName="name" required />
-      @if (form.controls['name'].invalid) {
+      <mat-error>
+        <app-error [errors]="form.controls['name'].errors"></app-error>
+      </mat-error>
+
+      <!-- @if (form.controls['name'].invalid) {
       <mat-error>{{ form.controls["name"].errors | json }}</mat-error>
-      }
+      } -->
       <mat-icon matSuffix>storefront</mat-icon>
       <mat-hint>Minimum 6 characters and max 10 characters</mat-hint>
     </mat-form-field>
@@ -19,9 +23,9 @@
         formControlName="description"
         required
       />
-      @if (form.controls['description'].invalid) {
-      <mat-error>{{ form.controls["description"].errors | json }}</mat-error>
-      }
+      <mat-error>
+        <app-error [errors]="form.controls['description'].errors"></app-error>
+      </mat-error>
       <mat-icon matSuffix>description</mat-icon>
       <mat-hint>Max 256 characters</mat-hint>
     </mat-form-field>
@@ -39,12 +43,12 @@
       />
       @if (imgSource != null) {
       <img [src]="imgSource" width="50" height="50" />
-      } @if (form.controls['logo'].invalid) {
-      <mat-error>{{ form.controls["logo"].errors | json }}</mat-error>
       }
+      <mat-error>
+        <app-error [errors]="form.controls['logo'].errors"></app-error>
+      </mat-error>
       <mat-icon matSuffix>image</mat-icon>
       <mat-hint>Max 2mb</mat-hint>
-      {{ form.controls["logo"].errors }}
     </mat-form-field>
   </div>
   <div class="form-field">
@@ -56,9 +60,9 @@
         formControlName="location"
         required
       />
-      @if (form.controls['location'].invalid) {
-      <mat-error>{{ form.controls["location"].errors | json }}</mat-error>
-      }
+      <mat-error>
+        <app-error [errors]="form.controls['location'].errors"></app-error>
+      </mat-error>
       <mat-icon matSuffix>location_on</mat-icon>
     </mat-form-field>
   </div>

@@ -8,9 +8,9 @@
         formControlName="name"
         required
       />
-      @if (form.controls['name'].invalid) {
-      <mat-error>{{ form.controls["name"].errors | json }}</mat-error>
-      }
+      <mat-error>
+        <app-error [errors]="form.controls['name'].errors"></app-error>
+      </mat-error>
       <mat-icon matSuffix>badge</mat-icon>
       <mat-hint>Minimum 6 characters and max 10 characters</mat-hint>
     </mat-form-field>
@@ -24,9 +24,9 @@
         formControlName="email_address"
         required
       />
-      @if (form.controls['email_address'].invalid) {
-      <mat-error>{{ form.controls["email_address"].errors | json }}</mat-error>
-      }
+      <mat-error>
+        <app-error [errors]="form.controls['email_address'].errors"></app-error>
+      </mat-error>
       <mat-icon matSuffix>email</mat-icon>
     </mat-form-field>
   </div>
@@ -39,9 +39,9 @@
         formControlName="phone_number"
         required
       />
-      @if (form.controls['phone_number'].invalid) {
-      <mat-error>{{ form.controls["phone_number"].errors | json }}</mat-error>
-      }
+      <mat-error>
+        <app-error [errors]="form.controls['phone_number'].errors"></app-error>
+      </mat-error>
       <mat-icon matSuffix>call</mat-icon>
       <mat-hint>SG phone number</mat-hint>
     </mat-form-field>
@@ -56,9 +56,9 @@
       <mat-radio-button value="0">Male</mat-radio-button>
       <mat-radio-button value="1">Female</mat-radio-button>
     </mat-radio-group>
-    @if (form.controls['gender'].invalid) {
-    <mat-error>{{ form.controls["gender"].errors | json }}</mat-error>
-    }
+    <mat-error>
+        <app-error [errors]="form.controls['gender'].errors"></app-error>
+    </mat-error>
   </div>
   <div class="form-field">
     <mat-form-field>
@@ -68,9 +68,9 @@
         <mat-option [value]="cafe.name">{{ cafe.name }}</mat-option>
         }
       </mat-select>
-      @if (form.controls['cafe'].invalid) {
-      <mat-error>{{ form.controls["cafe"].errors | json }}</mat-error>
-      }
+      <mat-error>
+        <app-error [errors]="form.controls['cafe'].errors"></app-error>
+      </mat-error>
       <mat-icon matSuffix>storefront</mat-icon>
     </mat-form-field>
   </div>

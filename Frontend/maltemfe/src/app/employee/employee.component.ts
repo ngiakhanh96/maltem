@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -23,6 +22,7 @@ import { IEmployee } from '../../models/employee.model';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
 import { employeeActionGroup } from '../../store/action-group/employee.action-group';
 import { selectCafes, selectEmployee } from '../../store/reducer/app.reducer';
+import { ErrorComponent } from '../error/error.component';
 
 @Component({
   selector: 'app-employee',
@@ -34,9 +34,9 @@ import { selectCafes, selectEmployee } from '../../store/reducer/app.reducer';
     MatInputModule,
     MatIconModule,
     MatRadioModule,
-    JsonPipe,
     MatButtonModule,
     MatSelectModule,
+    ErrorComponent
   ],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',

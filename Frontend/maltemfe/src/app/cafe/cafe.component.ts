@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -21,6 +20,7 @@ import { ICafe } from '../../models/cafe.model';
 import { UtilityService } from '../../services/utility.service';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
 import { selectCafe } from '../../store/reducer/app.reducer';
+import { ErrorComponent } from '../error/error.component';
 
 @Component({
   selector: 'app-cafe',
@@ -31,8 +31,8 @@ import { selectCafe } from '../../store/reducer/app.reducer';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    JsonPipe,
     MatButtonModule,
+    ErrorComponent,
   ],
   templateUrl: './cafe.component.html',
   styleUrl: './cafe.component.scss',
@@ -74,9 +74,9 @@ export class CafeComponent implements OnInit, IHasUnsavedChanges {
             }),
             location: cafe.location,
           });
-          this.imgSource = this.utilityService.convertByteArrayToImageSource(
-            cafe.logo
-          );
+          this.imgSource = cafe.logo.length > 0
+            ? this.utilityService.convertByteArrayToImageSource(cafe.logo)
+            : null;
           this.initialFormValue = this.form.getRawValue();
           this.mode = 'Edit';
           this.cafe = cafe;
@@ -129,6 +129,7 @@ export class CafeComponent implements OnInit, IHasUnsavedChanges {
     this.form.patchValue({
       logo: selectedFile,
     });
+    this.form.controls.logo.markAsTouched();
     from(this.utilityService.convertFileToByteArray(selectedFile))
       .pipe(take(1))
       .subscribe((bytes) => {
