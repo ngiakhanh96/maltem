@@ -6,3 +6,4 @@
 ## For backend, navigate to Backend\MaltemBe and run following commands in order:
 ### docker build -t maltembe:latest .
 ### docker run -p 32772:8080 -p 32773:8081 -t -d maltembe
+## Finally open browser to navigate to http://localhost:4200/cafes or http://localhost:4200/employees
