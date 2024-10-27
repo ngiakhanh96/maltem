@@ -3,47 +3,65 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { AgGridAngular } from 'ag-grid-angular';
+import { ColDef } from 'ag-grid-community';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ICafe } from '../../models/cafe.model';
 import { UtilityService } from '../../services/utility.service';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
 import { selectCafes } from '../../store/reducer/app.reducer';
+import { ButtonCellComponent } from '../button-cell/button-cell.component';
+import { LogoCellComponent } from '../logo-cell/logo-cell.component';
 
 @Component({
   selector: 'app-cafes',
   standalone: true,
   imports: [
     MatButtonModule,
-    MatTableModule,
     MatFormFieldModule,
     MatInputModule,
+    AgGridAngular,
   ],
   templateUrl: './cafes.component.html',
   styleUrl: './cafes.component.scss',
 })
 export class CafesComponent implements OnInit {
-  dataColumnsToDisplay: string[] = [
-    'logo',
-    'name',
-    'description',
-    'employees',
-    'location',
+  colDefs: ColDef[] = [
+    {
+      field: 'logo',
+      cellRenderer: LogoCellComponent
+    },
+    { field: 'name' },
+    { field: 'description' },
+    {
+      field: 'employees',
+      onCellClicked: (event) => {
+        this.navigateToEmployeesPage(event.data);
+      },
+    },
+    { field: 'location' },
+    {
+      headerName: '',
+      field: 'editAction',
+      cellRenderer: ButtonCellComponent,
+      cellRendererParams: {
+        click: (cafe: ICafe) => this.editCafe(cafe),
+        text: 'Edit',
+      },
+    },
+    {
+      headerName: '',
+      field: 'deleteAction',
+      cellRenderer: ButtonCellComponent,
+      cellRendererParams: {
+        click: (cafe: ICafe) => this.deleteCafe(cafe),
+        text: 'Delete',
+      },
+    },
   ];
-  columnHeadersMap: Record<string, string> = {
-    logo: 'Logo',
-    name: 'Name',
-    description: 'Description',
-    employees: 'Employees',
-    location: 'Location',
-  };
-  columnsToDisplay = [
-    ...this.dataColumnsToDisplay,
-    'editAction',
-    'deleteAction',
-  ];
+
   dataSource: ICafe[] = [];
   router = inject(Router);
   store = inject(Store);

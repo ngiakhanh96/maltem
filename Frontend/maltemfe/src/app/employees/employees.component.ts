@@ -1,44 +1,65 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { AgGridAngular } from 'ag-grid-angular';
+import { ColDef } from 'ag-grid-community';
 import { IEmployee } from '../../models/employee.model';
 import { employeeActionGroup } from '../../store/action-group/employee.action-group';
 import { selectEmployees } from '../../store/reducer/app.reducer';
+import { ButtonCellComponent } from '../button-cell/button-cell.component';
 
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [MatButtonModule, MatTableModule],
+  imports: [MatButtonModule, AgGridAngular],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.scss',
 })
 export class EmployeesComponent implements OnInit {
-  dataColumnsToDisplay: string[] = [
-    'id',
-    'name',
-    'email_address',
-    'phone_number',
-    'days_worked',
-    'cafe',
+  colDefs: ColDef[] = [
+    {
+      headerName: 'Employee id',
+      field: 'id',
+    },
+    { field: 'name' },
+    {
+      headerName: 'Email address',
+      field: 'email_address',
+    },
+    {
+      headerName: 'Phone number',
+      field: 'phone_number',
+    },
+    {
+      headerName: 'Days worked',
+      field: 'days_worked',
+    },
+    {
+      headerName: 'Cafe name',
+      field: 'cafe',
+    },
+    {
+      headerName: '',
+      field: 'editAction',
+      cellRenderer: ButtonCellComponent,
+      cellRendererParams: {
+        click: (employee: IEmployee) => this.editEmployee(employee),
+        text: 'Edit',
+      },
+    },
+    {
+      headerName: '',
+      field: 'deleteAction',
+      cellRenderer: ButtonCellComponent,
+      cellRendererParams: {
+        click: (employee: IEmployee) => this.deleteEmployee(employee),
+        text: 'Delete',
+      },
+    },
   ];
 
-  columnHeadersMap: Record<string, string> = {
-    id: 'Employee id',
-    name: 'Name',
-    email_address: 'Name',
-    phone_number: 'Name',
-    days_worked: 'Days worked in the cafe',
-    cafe: 'Cafe name',
-  };
-
-  columnsToDisplay = [
-    ...this.dataColumnsToDisplay,
-    'editAction',
-    'deleteAction',
-  ];
   dataSource: IEmployee[] = [];
   router = inject(Router);
   route = inject(ActivatedRoute);
