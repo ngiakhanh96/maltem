@@ -1,12 +1,11 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,6 +19,7 @@ import { ICafe } from '../../models/cafe.model';
 import { UtilityService } from '../../services/utility.service';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
 import { selectCafe } from '../../store/reducer/app.reducer';
+import { fileSizeValidatorFn } from '../../validators/file-size.validator';
 import { ErrorComponent } from '../error/error.component';
 
 @Component({
@@ -146,10 +146,4 @@ export class CafeComponent implements OnInit, IHasUnsavedChanges {
         this.form.getRawValue().logo !== this.initialFormValue.logo)
     );
   }
-}
-
-export function fileSizeValidatorFn(control: AbstractControl) {
-  return control.value == null || (control.value as File).size <= 2000000
-    ? null
-    : { exceededMaximumFileSize: (control.value as File).size };
 }

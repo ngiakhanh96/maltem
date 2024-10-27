@@ -1,12 +1,11 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +21,7 @@ import { IEmployee } from '../../models/employee.model';
 import { cafeActionGroup } from '../../store/action-group/cafe.action-group';
 import { employeeActionGroup } from '../../store/action-group/employee.action-group';
 import { selectCafes, selectEmployee } from '../../store/reducer/app.reducer';
+import { singaporePhoneNumberValidatorFn } from '../../validators/singapore-phone-number.validator';
 import { ErrorComponent } from '../error/error.component';
 
 @Component({
@@ -155,10 +155,4 @@ export class EmployeeComponent implements OnInit, IHasUnsavedChanges {
         JSON.stringify(this.initialFormValue)
     );
   }
-}
-
-export function singaporePhoneNumberValidatorFn(control: AbstractControl) {
-  return /\b(8|9)\d{7}\b/g.test(control.value)
-    ? null
-    : { invalidPhoneNumber: { value: control.value } };
 }
