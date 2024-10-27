@@ -65,7 +65,7 @@
       <mat-label>Assigned Café</mat-label>
       <mat-select #matSelect formControlName="cafe">
         @for (cafe of cafes; track cafe) {
-        <mat-option [value]="cafe.name">{{ cafe.name }}</mat-option>
+          <mat-option [value]="cafe.name">{{ cafe.name }}</mat-option>
         }
       </mat-select>
       <mat-error>
