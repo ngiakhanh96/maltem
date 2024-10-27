@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MaltemBe.Converters;
 using MaltemBe.Models;
 using MaltemBe.Repositories;
@@ -5,6 +7,7 @@ using MaltemBe.Repositories.Interfaces;
 using MaltemBe.Services;
 using MaltemBe.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +37,8 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod();
         });
 });
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
