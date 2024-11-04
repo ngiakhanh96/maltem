@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, SizeColumnsToFitGridStrategy } from 'ag-grid-community';
 import { IEmployee } from '../../models/employee.model';
 import { employeeActionGroup } from '../../store/action-group/employee.action-group';
 import { selectEmployees } from '../../store/reducer/app.reducer';
@@ -59,7 +59,7 @@ export class EmployeesComponent implements OnInit {
       },
     },
   ];
-
+  autoSizeStrategy: SizeColumnsToFitGridStrategy = { type: 'fitGridWidth' };
   dataSource: IEmployee[] = [];
   router = inject(Router);
   route = inject(ActivatedRoute);

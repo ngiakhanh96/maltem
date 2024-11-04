@@ -15,3 +15,11 @@ button {
   text-decoration: underline;
   cursor: pointer;
 }
+
+ag-grid-angular {
+  ::ng-deep {
+    .ag-center-cols-viewport {
+      min-height: unset !important;
+    }
+  }
+}
