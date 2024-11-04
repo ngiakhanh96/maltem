@@ -53,4 +53,4 @@ jobs:
           app-name: 'maltem'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_07AEA9563040444283F95EB42D58E233 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CB1A715099CD4EAAA177519BA9963A5E }}
