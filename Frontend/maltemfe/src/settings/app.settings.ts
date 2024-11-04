@@ -1,3 +1,3 @@
 export const appSettings = {
-  apiUrl: 'http://localhost:32772/',
+  apiUrl: 'https://maltem-e7g4bucrhtbxe5en.eastasia-01.azurewebsites.net/',
 };
