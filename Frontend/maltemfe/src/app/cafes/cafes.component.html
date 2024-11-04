@@ -5,7 +5,9 @@
 </mat-form-field>
 <ag-grid-angular
   class="ag-theme-quartz"
-  style="height: 700px;"
+  domLayout="autoHeight"
   [rowHeight]="50"
   [rowData]="dataSource"
-  [columnDefs]="colDefs" />
+  [columnDefs]="colDefs"
+  [autoSizeStrategy]="autoSizeStrategy"
+/>

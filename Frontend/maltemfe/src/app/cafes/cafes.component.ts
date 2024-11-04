@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, SizeColumnsToFitGridStrategy } from 'ag-grid-community';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ICafe } from '../../models/cafe.model';
 import { UtilityService } from '../../services/utility.service';
@@ -18,12 +18,7 @@ import { LogoCellComponent } from '../logo-cell/logo-cell.component';
 @Component({
   selector: 'app-cafes',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    AgGridAngular,
-  ],
+  imports: [MatButtonModule, MatFormFieldModule, MatInputModule, AgGridAngular],
   templateUrl: './cafes.component.html',
   styleUrl: './cafes.component.scss',
 })
@@ -31,7 +26,7 @@ export class CafesComponent implements OnInit {
   colDefs: ColDef[] = [
     {
       field: 'logo',
-      cellRenderer: LogoCellComponent
+      cellRenderer: LogoCellComponent,
     },
     { field: 'name' },
     { field: 'description' },
@@ -61,7 +56,7 @@ export class CafesComponent implements OnInit {
       },
     },
   ];
-
+  autoSizeStrategy: SizeColumnsToFitGridStrategy = { type: 'fitGridWidth' };
   dataSource: ICafe[] = [];
   router = inject(Router);
   store = inject(Store);
